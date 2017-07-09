@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * Created by Sportus on 7/9/2017.
  */
 
-public class CheckedGroupHandler implements CompoundButton.OnCheckedChangeListener{
+class CheckedGroupHandler implements CompoundButton.OnCheckedChangeListener{
 
     private ArrayList<CheckBox> checkBoxes;
 

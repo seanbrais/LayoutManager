@@ -274,11 +274,19 @@ public class CenterLayout extends Activity {
         int editTextID = checkBox.generateViewId();
         checkBox.setBackgroundResource(R.drawable.green_edit_text_background);
         checkBox.setId(editTextID);
-        checkBox.setChecked(true);
         checkBox.setHighlightColor(Color.parseColor("#007216"));
         relativeLayout.addView(checkBox, params);
         checkBox.setButtonDrawable(R.drawable.custom_checkbox);
         return checkBox;
+    }
+
+    public boolean boxIsChecked(ArrayList<CheckBox> checkBoxes){
+        for (CheckBox checkBox: checkBoxes) {
+            if(checkBox.isChecked()){
+                return true;
+            }
+        }
+        return false;
     }
 
     public void createCheckBoxGroup(ArrayList<CheckBox> checkBoxes){
