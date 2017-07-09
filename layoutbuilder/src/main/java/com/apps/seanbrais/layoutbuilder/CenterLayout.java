@@ -11,8 +11,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -316,145 +314,9 @@ public class CenterLayout extends Activity {
         return this.viewsList.get(this.viewsList.size() -1);
     }
 
-    public ArrayList<View> getEndGroupViews(){
-        return this.endGroupViews;
-    }
-
-    public ArrayList<Button> getButtons(){
-        return this.buttons;
-    }
-
-
     public RelativeLayout getRelativeLayout(){
         return this.relativeLayout;
     }
-
-    public int getNumGroups(){
-        return this.numGroups;
-    }
-
-    public TextView getHeaderText(){
-        return this.headerText;
-    }
-
-
-    public void createGroup(String firstText, String secondText, int textSize, View viewAbove){
-        TextView tv = createTextView(firstText, textSize, 35, viewAbove);
-        TextView tv2 = createSecondaryText(secondText, textSize / 2, 0, tv);
-        endGroupViews.add(tv2);
-        numGroups++;
-        //drawLine(endGroupViews.get(numGroups - 1));
-    }
-
-    public void createGroup(String firstText, String secondText, int inputType, int textSize, View viewAbove){
-        TextView tv = createTextView(firstText, textSize, 35, viewAbove);
-        //EditText editText = addEditText(secondText, inputType, tv);
-        //editText.setBackgroundResource(R.drawable.green_edit_text_background);
-        //endGroupViews.add(editText);
-        numGroups++;
-        //drawLine(endGroupViews.get(numGroups - 1));
-    }
-    public void createGroup(String firstText, String secondText, String thirdText, int inputType, int textSize, View viewAbove){
-        TextView primaryText = createTextView(firstText, textSize,35, viewAbove);
-        TextView miniText = createSecondaryText(secondText, textSize / 3, 0, primaryText);
-        //EditText editText = addEditText(thirdText, inputType, miniText);
-        //editText.setBackgroundResource(R.drawable.green_edit_text_background);
-        //endGroupViews.add(editText);
-        numGroups++;
-        //drawLine(endGroupViews.get(numGroups - 1));
-    }
-
-    public void createGroup(String firstText, int textSize, View viewAbove){
-        TextView tv = createTextView(firstText, textSize, 35, viewAbove);
-        CheckBox checkBox = createCheckBox(tv);
-        checkBox.setBackgroundResource(R.drawable.green_edit_text_background);
-        endGroupViews.add(checkBox);
-        numGroups++;
-        //drawLine(endGroupViews.get(numGroups - 1));
-    }
-
-    public TextView createSecondaryText(String text, int textSize, int margin, View viewAbove) {
-        TextView tv = createTextView(text, textSize, margin, viewAbove);
-        secondaryTexts.add(tv);
-        return tv;
-    }
-    public TextView createTextView(String text, int textSize, int margin, View viewAbove) {
-        TextView tv = new TextView(this);
-        tv.setText(text);
-        tv.setTextColor(Color.BLACK);
-        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.addRule(RelativeLayout.CENTER_HORIZONTAL);
-        params.addRule(RelativeLayout.BELOW, viewAbove.getId());
-        params.topMargin = margin;
-        int textViewID = tv.generateViewId();
-        tv.setId(textViewID);
-        relativeLayout.addView(tv, params);
-        return tv;
-    }
-
-    public CheckBox createCheckBox(View above){
-        CheckBox checkBox = new CheckBox(this);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.addRule(RelativeLayout.CENTER_HORIZONTAL);
-        params.addRule(RelativeLayout.BELOW, above.getId());
-        checkBox.setGravity(Gravity.CENTER_HORIZONTAL);
-        int editTextID = checkBox.generateViewId();
-        checkBox.setId(editTextID);
-        checkBox.setChecked(true);
-        relativeLayout.addView(checkBox, params);
-        checkBoxes.add(checkBox);
-        return checkBox;
-    }
-
-    public View drawLine(View viewAbove, int color){
-        View line = new View(this);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 5);
-        line.setBackgroundColor(color);
-        params.addRule(RelativeLayout.CENTER_HORIZONTAL);
-        params.addRule(RelativeLayout.BELOW, viewAbove.getId());
-        params.topMargin = 25;
-        relativeLayout.addView(line, params);
-        return line;
-    }
-
-
-    public Button createButtonGroup(View viewAbove, String text){
-        Button button = new Button(this);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.addRule(RelativeLayout.CENTER_HORIZONTAL);
-        params.addRule(RelativeLayout.BELOW, viewAbove.getId());
-        params.topMargin = 50;
-        params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-        params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        params.addRule(RelativeLayout.ALIGN_PARENT_START);
-        params.addRule(RelativeLayout.ALIGN_PARENT_END);
-        getRelativeLayout().addView(button, params);
-        button.setText(text);
-        button.setTextColor(Color.BLACK);
-        int id = button.generateViewId();
-        button.setId(id);
-        button.setBackgroundResource(R.drawable.green_edit_text_background);
-        this.endGroupViews.add(button);
-        this.numGroups++;
-        this.buttons.add(button);
-        //this.drawLine(button);
-        return button;
-    }
-
-    public View getEndingView(){
-        return  getEndGroupViews().get(getNumGroups() -1);
-    }
-
-
-    public String getStringFromEditText(int index){
-        return editTexts.get(index).getText().toString();
-    }
-    public ArrayList<TextView> getSecondaryTexts(){
-        return this.secondaryTexts;
-    }
-
-
         /*
     public RadioGroup radioGroup (ArrayList<RadioButton> radioButtons){
         RadioGroup radioGroup = new RadioGroup(this);
