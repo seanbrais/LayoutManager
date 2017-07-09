@@ -26,27 +26,15 @@ public class CenterLayout extends Activity {
     private RelativeLayout relativeLayout;
     private TextView headerText;
 
-    private HashMap<String, EditText> editTextHashMap;
     private ArrayList<EditText> editTexts;
 
-
-    private HashMap<String, TextView> textViewHashMap;
     private ArrayList<TextView> textViews;
 
-
-    private HashMap<String, Button> buttonsHashMap;
     private ArrayList<Button> buttons;
 
-
-    private HashMap<String, CheckBox> checkBoxHashMap;
     private ArrayList<CheckBox> checkBoxes;
 
     private ArrayList<View> viewsList;
-
-    private ArrayList<TextView> secondaryTexts;
-    private ArrayList<View> endGroupViews;
-
-    private int numGroups = 0;
 
     public final int INPUT_NUM = InputType.TYPE_CLASS_NUMBER;
 
@@ -60,68 +48,45 @@ public class CenterLayout extends Activity {
         //Initialization
 
         this.editTexts = new ArrayList<>();
-        this.editTextHashMap = new HashMap<>();
-
-        this.textViewHashMap = new HashMap<>();
         this.textViews = new ArrayList<>();
 
-        this.buttonsHashMap = new HashMap<>();
         this.buttons = new ArrayList<>();
 
-        this.checkBoxHashMap = new HashMap<>();
         this.checkBoxes = new ArrayList<>();
 
         this.viewsList = new ArrayList<>();
-        this.endGroupViews = new ArrayList<>();
         this.headerText = (TextView) this.findViewById(R.id.headerText);
         this.viewsList.add(headerText);
-        this.secondaryTexts = new ArrayList<>();
 
         this.relativeLayout = (RelativeLayout) this.findViewById(R.id.relativeLayout);
 
         addLine();
     }
 
-
     //Edit Texts
-    public ArrayList<EditText> getEditTexts(){
-        return this.editTexts;
-    }
-
-    public EditText getEditText(String key){
-        if(!this.editTextHashMap.containsKey(key)){
-            return null;
-        }
-        return this.editTextHashMap.get(key);
-    }
-
     /**
      *
-     * @param name Name of the Edit Text
      * @param text Text to be displayed in Edit Text
      * @param inputType Type of input of the Edit Text
      * @return Edit Text object that was instantiated
      */
-    public EditText addEditText(String name, String text, int inputType){
+    public EditText addEditText(String text, int inputType){
         EditText editText = createEditText(text, inputType, this.defaultMargin);
         this.viewsList.add(editText);
-        this.editTextHashMap.put(name, editText);
         this.editTexts.add(editText);
         return editText;
     }
 
     /**
      *
-     * @param name Name of the Edit Text
      * @param text Text to be displayed in Edit Text
      * @param inputType Type of input of the Edit Text
      * @param margin Margin from element above
      * @return Edit Text object that was instantiated
      */
-    public EditText addEditText(String name, String text, int inputType, int margin){
+    public EditText addEditText(String text, int inputType, int margin){
         EditText editText = createEditText(text, inputType, margin);
         this.viewsList.add(editText);
-        this.editTextHashMap.put(name, editText);
         this.editTexts.add(editText);
         return editText;
     }
@@ -145,31 +110,16 @@ public class CenterLayout extends Activity {
         return editText;
     }
 
-
-    //Text Views
-    public ArrayList<TextView> getTextViews(){
-        return this.textViews;
-    }
-
-    public TextView getTextView(String name){
-        if(!this.textViewHashMap.containsKey(name)){
-            return null;
-        }
-        return this.textViewHashMap.get(name);
-    }
-
-    public TextView addTextView(String name, String text, int textSize){
+    public TextView addTextView(String text, int textSize){
         TextView textView = createTextView(text, textSize, this.defaultMargin);
         this.viewsList.add(textView);
-        this.textViewHashMap.put(name, textView);
         this.textViews.add(textView);
         return textView;
     }
 
-    public TextView addTextView(String name, String text, int textSize, int margin){
+    public TextView addTextView(String text, int textSize, int margin){
         TextView textView = createTextView(text, textSize, margin);
         this.viewsList.add(textView);
-        this.textViewHashMap.put(name, textView);
         this.textViews.add(textView);
         return textView;
     }
@@ -194,25 +144,16 @@ public class CenterLayout extends Activity {
         return this.buttons;
     }
 
-    public Button getButton(String name){
-        if(!this.buttonsHashMap.containsKey(name)){
-            return null;
-        }
-        return this.buttonsHashMap.get(name);
-    }
-
-    public Button addButton(String name, String text){
+    public Button addButton(String text){
         Button button = createButtonGroup(text, this.defaultMargin);
         this.viewsList.add(button);
-        this.buttonsHashMap.put(name, button);
         this.buttons.add(button);
         return button;
     }
 
-    public Button addButton(String name, String text, int margin){
+    public Button addButton(String text, int margin){
         Button button = createButtonGroup(text, margin);
         this.viewsList.add(button);
-        this.buttonsHashMap.put(name, button);
         this.buttons.add(button);
         return button;
     }
@@ -241,17 +182,9 @@ public class CenterLayout extends Activity {
         return this.checkBoxes;
     }
 
-    public Button getCheckBox(String name){
-        if(!this.checkBoxHashMap.containsKey(name)){
-            return null;
-        }
-        return this.checkBoxHashMap.get(name);
-    }
-
     public CheckBox addCheckBox(String name){
         CheckBox checkBox = createCheckBox(this.defaultMargin);
         this.viewsList.add(checkBox);
-        this.checkBoxHashMap.put(name, checkBox);
         checkBoxes.add(checkBox);
         return checkBox;
     }
@@ -259,7 +192,6 @@ public class CenterLayout extends Activity {
     public CheckBox addCheckBox(String name, int margin){
         CheckBox checkBox = createCheckBox(margin);
         this.viewsList.add(checkBox);
-        this.checkBoxHashMap.put(name, checkBox);
         checkBoxes.add(checkBox);
         return checkBox;
     }
@@ -274,6 +206,7 @@ public class CenterLayout extends Activity {
         int editTextID = checkBox.generateViewId();
         checkBox.setBackgroundResource(R.drawable.green_edit_text_background);
         checkBox.setId(editTextID);
+        checkBox.setChecked(true);
         checkBox.setHighlightColor(Color.parseColor("#007216"));
         relativeLayout.addView(checkBox, params);
         checkBox.setButtonDrawable(R.drawable.custom_checkbox);
