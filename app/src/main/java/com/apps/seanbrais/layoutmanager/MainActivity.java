@@ -3,8 +3,7 @@ package com.apps.seanbrais.layoutmanager;
 import android.os.Bundle;
 import android.text.InputType;
 import android.widget.Button;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.widget.CheckBox;
 
 
 import com.apps.seanbrais.layoutbuilder.CenterLayout;
@@ -31,16 +30,22 @@ public class MainActivity extends CenterLayout {
         addLine();
         addTextView("TextView3", "Enter values", 25);
         addTextView("TextView4", "Is negative", 10, 50);
-        addCheckBox("CheckBox1");
+        CheckBox checkBox = addCheckBox("CheckBox1");
         addLine();
         addTextView("TextView5", "Is number", 10);
-        addCheckBox("CheckBox2");
+        CheckBox checkBox1 = addCheckBox("CheckBox2");
         addLine();
         addTextView("TextView6", "Is character", 10);
-        addCheckBox("CheckBox3");
+        CheckBox checkBox2 = addCheckBox("CheckBox3");
         addLine();
         addButton("Button2", "Go!");
         Button button = getButton("Button2");
         addLine();
+
+        ArrayList<CheckBox> checkBoxes = new ArrayList<>();
+        checkBoxes.add(checkBox);
+        checkBoxes.add(checkBox1);
+        checkBoxes.add(checkBox2);
+        createCheckBoxGroup(checkBoxes);
     }
 }

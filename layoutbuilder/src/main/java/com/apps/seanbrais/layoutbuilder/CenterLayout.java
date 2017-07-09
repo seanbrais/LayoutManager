@@ -281,6 +281,12 @@ public class CenterLayout extends Activity {
         return checkBox;
     }
 
+    public void createCheckBoxGroup(ArrayList<CheckBox> checkBoxes){
+        for(CheckBox checkBox: checkBoxes){
+            checkBox.setOnCheckedChangeListener(new CheckedGroupHandler(checkBoxes));
+        }
+    }
+
     public View addLine(){
         View line = drawLine(this.defaultMargin);
         this.viewsList.add(line);
