@@ -1,4 +1,4 @@
-package com.apps.seanbrais.layoutbuilder;
+package com.apps.seanbrais.layoutbuilder.views;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -13,6 +13,9 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.apps.seanbrais.layoutbuilder.R;
+import com.apps.seanbrais.layoutbuilder.handlers.CheckedGroupHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;

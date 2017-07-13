@@ -1,12 +1,14 @@
 package com.apps.seanbrais.layoutmanager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 
 
-import com.apps.seanbrais.layoutbuilder.CenterLayout;
+import com.apps.seanbrais.layoutbuilder.views.CenterLayout;
 
 import java.util.ArrayList;
 
@@ -38,7 +40,7 @@ public class MainActivity extends CenterLayout {
         addTextView("Is character", 10);
         CheckBox checkBox2 = addCheckBox("CheckBox3");
         addLine();
-        addButton("Go!");
+        Button goButton = addButton("Go!");
         addLine();
 
         ArrayList<CheckBox> checkBoxes = new ArrayList<>();
@@ -46,5 +48,9 @@ public class MainActivity extends CenterLayout {
         checkBoxes.add(checkBox1);
         checkBoxes.add(checkBox2);
         createCheckBoxGroup(checkBoxes);
+
+        ToGraphsScreenHandler toGraphsScreenHandler = new ToGraphsScreenHandler(this);
+        goButton.setOnClickListener(toGraphsScreenHandler);
+
     }
 }

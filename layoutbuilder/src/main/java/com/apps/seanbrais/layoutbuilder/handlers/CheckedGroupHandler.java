@@ -1,4 +1,4 @@
-package com.apps.seanbrais.layoutbuilder;
+package com.apps.seanbrais.layoutbuilder.handlers;
 
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * Created by Sportus on 7/9/2017.
  */
 
-class CheckedGroupHandler implements CompoundButton.OnCheckedChangeListener{
+public class CheckedGroupHandler implements CompoundButton.OnCheckedChangeListener{
 
     private ArrayList<CheckBox> checkBoxes;
 
