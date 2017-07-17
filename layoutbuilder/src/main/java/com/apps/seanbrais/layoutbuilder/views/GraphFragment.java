@@ -35,28 +35,25 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import java.util.ArrayList;
 
 
-public class GraphFragment extends Fragment implements SeekBar.OnSeekBarChangeListener,
+public abstract class GraphFragment extends Fragment implements SeekBar.OnSeekBarChangeListener,
         OnChartGestureListener, OnChartValueSelectedListener {
 
-    private LineChart mChart;
-    //private SeekBar mSeekBarX, mSeekBarY;
-    private SeekBar mSeekBarX;
-    private TextView tvX, tvY;
+    private LineChart chart;
+    private SeekBar seekBar;
     CheckBox textDisplayCheckBox;
 
     private ArrayList<Integer> xList;
     private ArrayList<Integer> yList;
 
-    private int maximum;
+    TextView tvX;
 
-    private int minimum;
+    private int xMinimum;
 
-    //private int numberOfShotsTaken = 0;
+    private int xMaximum;
 
-    //private ArrayList<Integer> shotHistory = new ArrayList<>();
+    private int yMinimum;
 
-    //private int numberOfShotsPerGroup = 0;
-
+    private int yMaximum;
 
     public GraphFragment() {
         // Required empty public constructor
@@ -66,15 +63,34 @@ public class GraphFragment extends Fragment implements SeekBar.OnSeekBarChangeLi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        xList = new ArrayList<>();
-        xList.add(0);
-        xList.add(5);
-        yList = new ArrayList<>();
-        yList.add(5);
-        yList.add(0);
-        this.minimum = 0;
-        this.maximum = 2;
+
+        xList = getXValues();
+        yList = getYValues();
+
+        this.xMinimum = getXMinimum();
+
+        this.xMaximum = getXMaximum();
+
+        this.yMinimum = getYMinimum();
+
+        this.yMaximum = getYMaximum();
+
     }
+
+    public abstract ArrayList<Integer> getXValues();
+
+    public abstract ArrayList<Integer> getYValues();
+
+    public abstract int getXMinimum();
+
+    public abstract int getXMaximum();
+
+    public abstract int getYMinimum();
+
+    public abstract int getYMaximum();
+
+
+
     @Override
 
     public void onActivityCreated(Bundle savedInstanceState){
@@ -83,43 +99,43 @@ public class GraphFragment extends Fragment implements SeekBar.OnSeekBarChangeLi
 
         textDisplayCheckBox = (CheckBox) getView().findViewById(R.id.showTextCheckBox);
 
-        mSeekBarX = (SeekBar) getView().findViewById(R.id.seekBar1);
+        seekBar = (SeekBar) getView().findViewById(R.id.seekBar1);
         //mSeekBarY = (SeekBar) findViewById(R.id.seekBar2);
-        mSeekBarX.setMax(this.maximum);
-        mSeekBarX.setProgress(this.maximum);
+        seekBar.setMax(this.xMaximum);
+        seekBar.setProgress(this.xMaximum);
         //mSeekBarY.setProgress(100);
         //mSeekBarY.setOnSeekBarChangeListener(this);
-        mSeekBarX.setOnSeekBarChangeListener(this);
+        seekBar.setOnSeekBarChangeListener(this);
 
-        mChart = (LineChart) getView().findViewById(R.id.chart1);
-        mChart.setOnChartGestureListener(this);
-        mChart.setOnChartValueSelectedListener(this);
-        mChart.setDrawGridBackground(false);
+        this.chart = (LineChart) getView().findViewById(R.id.chart1);
+        this.chart.setOnChartGestureListener(this);
+        this.chart.setOnChartValueSelectedListener(this);
+        this.chart.setDrawGridBackground(false);
 
         // no description text
-        mChart.setDescription("");
-        mChart.setNoDataTextDescription("You need to provide data for the chart.");
+        this.chart.setDescription("");
+        this.chart.setNoDataTextDescription("You need to provide data for the chart.");
 
         // enable touch gestures
-        mChart.setTouchEnabled(true);
+        this.chart.setTouchEnabled(true);
 
         // enable scaling and dragging
-        mChart.setDragEnabled(true);
-        mChart.setScaleEnabled(true);
-        // mChart.setScaleXEnabled(true);
-        // mChart.setScaleYEnabled(true);
+        this.chart.setDragEnabled(true);
+        this.chart.setScaleEnabled(true);
+        // chart.setScaleXEnabled(true);
+        // chart.setScaleYEnabled(true);
         // if disabled, scaling can be done on x- and y-axis separately
-        mChart.setPinchZoom(true);
+        this.chart.setPinchZoom(true);
 
         // set an alternative background color
-        // mChart.setBackgroundColor(Color.GRAY);
+        // chart.setBackgroundColor(Color.GRAY);
 
         // create a custom MarkerView (extend MarkerView) and specify the layout
         // to use for it
         MyMarkerView mv = new MyMarkerView(this.getContext(), R.layout.custom_marker_view);
 
         // set the marker to the chart
-        mChart.setMarkerView(mv);
+        this.chart.setMarkerView(mv);
 
         // x-axis limit line
 //        LimitLine llXAxis = new LimitLine(10f, "Index 10");
@@ -128,15 +144,15 @@ public class GraphFragment extends Fragment implements SeekBar.OnSeekBarChangeLi
 //        llXAxis.setLabelPosition(LimitLabelPosition.RIGHT_BOTTOM);
 //        llXAxis.setTextSize(10f);
 
-        XAxis xAxis = mChart.getXAxis();
+        XAxis xAxis = chart.getXAxis();
         //xAxis.addLimitLine(llXAxis); // add x-axis limit line
 
         // Typeface tf = Typeface.createFromAsset(this.getActivity().getAssets(), "OpenSans-Regular.ttf");
 
-        YAxis leftAxis = mChart.getAxisLeft();
+        YAxis leftAxis = chart.getAxisLeft();
         leftAxis.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
-        leftAxis.setAxisMaxValue(400f);
-        leftAxis.setAxisMinValue((float) this.minimum - 10f);
+        leftAxis.setAxisMaxValue((float)this.xMaximum + 0.01f);
+        leftAxis.setAxisMinValue(this.xMinimum);
         leftAxis.setStartAtZero(false);
         //leftAxis.setYOffset(20f);
         leftAxis.enableGridDashedLine(10f, 10f, 0f);
@@ -144,43 +160,54 @@ public class GraphFragment extends Fragment implements SeekBar.OnSeekBarChangeLi
         // limit lines are drawn behind data (and not on top)
         leftAxis.setDrawLimitLinesBehindData(true);
 
-        mChart.getAxisRight().setEnabled(false);
+        this.chart.getAxisRight().setEnabled(false);
 
-        //mChart.getViewPortHandler().setMaximumScaleY(2f);
-        //mChart.getViewPortHandler().setMaximumScaleX(2f);
+        //chart.getViewPortHandler().setMaximumScaleY(2f);
+        //chart.getViewPortHandler().setMaximumScaleX(2f);
 
         //Was 100
         // add data
-        setData(this.maximum);
-        mChart.getLineData().setValueTextSize(0f);
-//        mChart.setVisibleXRange(20);
-//        mChart.setVisibleYRange(20f, AxisDependency.LEFT);
-//        mChart.centerViewTo(20, 50, AxisDependency.LEFT);
+        setData(this.xMaximum);
+        this.chart.getLineData().setValueTextSize(0f);
+//        chart.setVisibleXRange(20);
+//        chart.setVisibleYRange(20f, AxisDependency.LEFT);
+//        chart.centerViewTo(20, 50, AxisDependency.LEFT);
 
-        mChart.animateX(2500, Easing.EasingOption.EaseInOutQuart);
-//        mChart.invalidate();
+        this.chart.animateX(2500, Easing.EasingOption.EaseInOutQuart);
+//        chart.invalidate();
 
         // get the legend (only possible after setting data)
-        Legend l = mChart.getLegend();
+        Legend l = this.chart.getLegend();
 
         // modify the legend ...
         // l.setPosition(LegendPosition.LEFT_OF_CHART);
         l.setForm(Legend.LegendForm.LINE);
 
         // // dont forget to refresh the drawing
-        mChart.invalidate();
+        this.chart.invalidate();
         textDisplayCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    mChart.getLineData().setValueTextSize(9f);
-                    mChart.invalidate();
+                    chart.getLineData().setValueTextSize(9f);
+                    chart.invalidate();
                 } else {
-                    mChart.getLineData().setValueTextSize(0f);
-                    mChart.invalidate();
+                    chart.getLineData().setValueTextSize(0f);
+                    chart.invalidate();
                 }
+                chart.invalidate();
             }
         });
+
+        //Update drawing to include all plots.
+        //By setting to 1 less than xMaximum and then moving to xMaximum it displays all plots
+        //Leaving it default at xMaximum would not display final plot.
+
+        seekBar.setProgress(this.xMaximum-1);
+        //chart.invalidate();
+        seekBar.setProgress(this.xMaximum);
+        this.chart.invalidate();
+
     }
 
     @Override
@@ -194,21 +221,22 @@ public class GraphFragment extends Fragment implements SeekBar.OnSeekBarChangeLi
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-        //tvX.setText("" + (mSeekBarX.getProgress() + 1));
+        //tvX.setText("" + (seekBar.getProgress() + 1));
         // tvY.setText("" + (mSeekBarY.getProgress()));
 
-        //setData(mSeekBarX.getProgress() + 1, mSeekBarY.getProgress());
-        setData(mSeekBarX.getProgress() + 1);
+        //setData(seekBar.getProgress() + 1, mSeekBarY.getProgress());
+        //setData(seekBar.getProgress() + 1);
+        setData(progress);
         if(textDisplayCheckBox.isChecked()){
-            mChart.getLineData().setValueTextSize(9f);
-            mChart.invalidate();
+            this.chart.getLineData().setValueTextSize(9f);
+            this.chart.invalidate();
         }
         else{
-            mChart.getLineData().setValueTextSize(0f);
-            mChart.invalidate();
+            this.chart.getLineData().setValueTextSize(0f);
+            this.chart.invalidate();
         }
         // redraw
-        mChart.invalidate();
+        this.chart.invalidate();
     }
 
     @Override
@@ -224,22 +252,19 @@ public class GraphFragment extends Fragment implements SeekBar.OnSeekBarChangeLi
     private void setData(int count) {
 
         ArrayList<String> xVals = new ArrayList<>();
-        int totalShotsTaken = 0;
 
         for (int i = 0; i < count; i++) {
             xVals.add(Integer.toString(xList.get(i)));
         }
 
         ArrayList<Entry> yVals = new ArrayList<Entry>();
-        int shotsMade = 0;
-        int totalShotsTakenNew = 0;
         for (int i = 0; i<count;i++) {
             yVals.add(new Entry(yList.get(i), i));
         }
 
-        YAxis leftAxis = mChart.getAxisLeft();
-        leftAxis.setAxisMaxValue(100f);
-        leftAxis.setAxisMinValue(0f);
+        YAxis leftAxis = chart.getAxisLeft();
+        leftAxis.setAxisMaxValue((float) this.yMaximum);
+        leftAxis.setAxisMinValue(this.yMinimum);
 
         // create a dataset and give it a type
         LineDataSet set1 = new LineDataSet(yVals, "Shot Percentage");
@@ -257,7 +282,7 @@ public class GraphFragment extends Fragment implements SeekBar.OnSeekBarChangeLi
         set1.setFillAlpha(65);
         set1.setFillColor(Color.parseColor("#007216"));
 //        set1.setDrawFilled(true);
-        // set1.setShader(new LinearGradient(0, 0, 0, mChart.getHeight(),
+        // set1.setShader(new LinearGradient(0, 0, 0, chart.getHeight(),
         // Color.BLACK, Color.WHITE, Shader.TileMode.MIRROR));
 
         ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
@@ -266,7 +291,7 @@ public class GraphFragment extends Fragment implements SeekBar.OnSeekBarChangeLi
         // create a data object with the datasets
         LineData data = new LineData(xVals, dataSets);
         // set data
-        mChart.setData(data);
+        chart.setData(data);
     }
 
 
@@ -281,7 +306,7 @@ public class GraphFragment extends Fragment implements SeekBar.OnSeekBarChangeLi
 
         // un-highlight values after the gesture is finished and no single-tap
         if(lastPerformedGesture != ChartTouchListener.ChartGesture.SINGLE_TAP)
-            mChart.highlightValues(null); // or highlightTouch(null) for callback to onNothingSelected(...)
+            chart.highlightValues(null); // or highlightTouch(null) for callback to onNothingSelected(...)
     }
 
     @Override
@@ -317,7 +342,7 @@ public class GraphFragment extends Fragment implements SeekBar.OnSeekBarChangeLi
     @Override
     public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
         Log.i("Entry selected", e.toString());
-        Log.i("", "low: " + mChart.getLowestVisibleXIndex() + ", high: " + mChart.getHighestVisibleXIndex());
+        Log.i("", "low: " + chart.getLowestVisibleXIndex() + ", high: " + chart.getHighestVisibleXIndex());
     }
 
     @Override

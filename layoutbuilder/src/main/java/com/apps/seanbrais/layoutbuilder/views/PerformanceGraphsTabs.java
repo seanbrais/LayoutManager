@@ -16,7 +16,6 @@ import java.util.List;
 public abstract class PerformanceGraphsTabs extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    private String[] enteredData;
     private Bundle data;
     public ArrayList<Fragment> fragments = new ArrayList<>();
     public ArrayList<String> fragmentNames = new ArrayList<>();
@@ -74,10 +73,6 @@ public abstract class PerformanceGraphsTabs extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
         }
-    }
-
-    public String[] getEnteredData(){
-        return enteredData;
     }
 }
 
