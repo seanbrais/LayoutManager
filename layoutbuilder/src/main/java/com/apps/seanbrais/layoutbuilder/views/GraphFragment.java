@@ -42,8 +42,8 @@ public abstract class GraphFragment extends Fragment implements SeekBar.OnSeekBa
     private SeekBar seekBar;
     CheckBox textDisplayCheckBox;
 
-    private ArrayList<Integer> xList;
-    private ArrayList<Integer> yList;
+    private ArrayList<String> xList;
+    private ArrayList<Float> yList;
 
     TextView tvX;
 
@@ -63,33 +63,54 @@ public abstract class GraphFragment extends Fragment implements SeekBar.OnSeekBa
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        xList = getXValues();
-        yList = getYValues();
-
-        this.xMinimum = getXMinimum();
-
-        this.xMaximum = getXMaximum();
-
-        this.yMinimum = getYMinimum();
-
-        this.yMaximum = getYMaximum();
-
     }
 
-    public abstract ArrayList<Integer> getXValues();
+    public void setXList(ArrayList<String> xList){
+        this.xList = xList;
+    }
 
-    public abstract ArrayList<Integer> getYValues();
+    public void setYList(ArrayList<Float> yList){
+        this.yList = yList;
+    }
 
-    public abstract int getXMinimum();
+    public void setXMinimum(int xMinimum){
+        this.xMinimum = xMinimum;
+    }
 
-    public abstract int getXMaximum();
+    public void setXMaximum(int xMaximum){
+        this.xMaximum = xMaximum;
+    }
 
-    public abstract int getYMinimum();
+    public void setYMinimum(int yMinimum){
+        this.yMinimum = yMinimum;
+    }
 
-    public abstract int getYMaximum();
+    public void setYMaximum(int yMaximum){
+        this.yMaximum = yMaximum;
+    }
 
+    public ArrayList<String> getXList(){
+        return this.xList;
+    }
 
+    public ArrayList<Float> getYList(){
+        return this.yList;
+    }
+
+    public int getxMinimum(){
+        return this.xMinimum;
+    }
+
+    public int getxMaximum(){
+        return this.xMaximum;
+    }
+
+    public int getYMinimum(){
+        return this.yMinimum;
+    }
+    public int getYMaximum(){
+        return this.yMaximum;
+    }
 
     @Override
 
@@ -254,7 +275,7 @@ public abstract class GraphFragment extends Fragment implements SeekBar.OnSeekBa
         ArrayList<String> xVals = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
-            xVals.add(Integer.toString(xList.get(i)));
+            xVals.add(xList.get(i));
         }
 
         ArrayList<Entry> yVals = new ArrayList<Entry>();

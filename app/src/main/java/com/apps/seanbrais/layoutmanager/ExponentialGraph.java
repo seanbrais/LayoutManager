@@ -1,5 +1,7 @@
 package com.apps.seanbrais.layoutmanager;
 
+import android.os.Bundle;
+
 import com.apps.seanbrais.layoutbuilder.views.GraphFragment;
 
 import java.util.ArrayList;
@@ -9,45 +11,37 @@ import java.util.ArrayList;
  */
 
 public class ExponentialGraph extends GraphFragment {
-    @Override
-    public ArrayList<Integer> getXValues() {
-
-        ArrayList<Integer> xValues = new ArrayList<>();
-
-        for(int i = 0; i < 100; i++){
-            xValues.add(i);
-        }
-        return xValues;
-    }
 
     @Override
-    public ArrayList<Integer> getYValues() {
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-        ArrayList<Integer> yValues = new ArrayList<>();
+        ArrayList<String> xValues = new ArrayList<>();
+        xValues.add("0");
+        xValues.add("1");
+        xValues.add("2");
+        xValues.add("3");
+        xValues.add("4");
+        xValues.add("5");
+        setXList(xValues);
 
-        for(int i = 0; i < 100; i++){
-            yValues.add((int) Math.pow(i,2));
-        }
-        return yValues;
+
+        ArrayList<Float> yValues = new ArrayList<>();
+        yValues.add(0f);
+        yValues.add(1f);
+        yValues.add(2f);
+        yValues.add(3f);
+        yValues.add(4f);
+        yValues.add(5f);
+        setYList(yValues);
+
+
+        setXMinimum(0);
+        setXMaximum(getXList().size());
+
+        setYMinimum(0);
+        setYMaximum(5);
+
     }
 
-    @Override
-    public int getXMinimum() {
-        return 0;
-    }
-
-    @Override
-    public int getXMaximum() {
-        return getXValues().size();
-    }
-
-    @Override
-    public int getYMinimum() {
-        return 0;
-    }
-
-    @Override
-    public int getYMaximum() {
-        return getYValues().get(getYValues().size()-1 );
-    }
 }
